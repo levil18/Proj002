@@ -22,7 +22,7 @@ import com.teste.levil.Encurta;
 
 @Entity
 @Table(name = "urls") 
-@WebServlet("/PonteEncurta")
+@WebServlet("/")
 public class PonteEncurta extends HttpServlet {
 	
 	/**
@@ -190,7 +190,7 @@ public class PonteEncurta extends HttpServlet {
 	
 	 @Override
 	 protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	     	String urlOriginal = request.getParameter("url"), hashGerada, urlRefeita = null;
+	     	String urlOriginal = request.getParameter("url"), hashGerada = null, urlRefeita = null;
 	        //boolean PressBotao = request.getParameter("encurtador") != null;
 	     	List<PonteEncurta> list= null;
 	     	
@@ -202,18 +202,22 @@ public class PonteEncurta extends HttpServlet {
 		    for(int i = 0; i < list.size(); i++) {
 			    u.insereKey(list.get(i).getHash(), list.get(i).getOriginal());
 			}
-		    if(!(u.verificaHash(u.encurtador(urlOriginal)))) {
-			    hashGerada = u.encurtador(urlOriginal);
-			    //System.out.println("Hash Gerada: " + hashGerada);
-				urlRefeita = u.refazUrl(hashGerada);
-				//System.out.println("URL Original: " + urlRefeita);
-				//System.out.println("Antes de inserir");
+		    
+		    
+		    //System.out.println(hashGerada);
+		    //System.out.println(u.verificaHash(urlOriginal)); 
+		    
+		    if(!(u.verificaHash(urlOriginal))) {
+		    	hashGerada = u.encurtador(urlOriginal);
+			    urlRefeita = u.refazUrl(hashGerada);
+		    	//u.insereKey(hashGerada,urlRefeita);
 		        insere(hashGerada, urlRefeita);
 		    }
 		    //passa atributo para a página
 		    request.setAttribute("original", urlRefeita);
+		    request.setAttribute("hash", hashGerada);
 		    //seta o atributo e joga pra página linkada
-		    request.getRequestDispatcher("/resultado.jsp").forward(request, response);
+		    request.getRequestDispatcher("/index.jsp").forward(request, response);
 	        //response.sendRedirect(request.getContextPath()+"/resultado.jsp"); 
 	 }
 }

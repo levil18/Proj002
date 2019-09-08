@@ -27,11 +27,13 @@ String contextPath = request.getContextPath();
 	  <form action="PonteEncurta" method="post">
 	  <input type="text" id="input" name="url" placeholder="Insira ou digite sua URL"  value=<%=request.getAttribute("original").toString()%>/>
 	  <div class="botoes">
-		<input type="submit" name="refazUrl" value="Refazer" id="refazUrl"/>
 		<input type="submit" name="encurtador" value="Encurtar" id="encurtador"/>
+		<input type="button" name="refazUrl" value="Refazer" id="refazUrl"/>
+		<input type="button" name="mostraUrls" value="Mostrar URLs" id="mostraUrls"/>
 	  </div>
 	  </form>
 	  <section id="section">
+	  
 	  <%
 		    PonteEncurta links = new PonteEncurta();
 		    List<PonteEncurta> list= null;

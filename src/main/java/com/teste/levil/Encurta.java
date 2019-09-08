@@ -51,6 +51,7 @@ public class Encurta {
 	}
 
 	public boolean verificaHash (String urlAtual) {
+		urlAtual = padronizaURL(urlAtual);
 		if (mapeiaVal.containsKey(urlAtual)) {
 			return true;
 		} else {

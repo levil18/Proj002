@@ -3,8 +3,17 @@
 <%@ page import ="java.util.List"%>
 <%@page import="com.teste.levil.PonteEncurta" %>
 <%
-String contextPath = request.getContextPath();
-//out.println(contextPath);
+	String contextPath = request.getContextPath(), URL = "levil.com.br/", original = "", hash="";
+	//out.println(contextPath);
+	if(null != request.getAttribute("original")){
+        original = request.getAttribute("original").toString();
+    }
+	if(null != request.getAttribute("hash")){
+		hash = request.getAttribute("hash").toString();
+ 	}
+    PonteEncurta links = new PonteEncurta();
+    List<PonteEncurta> list= null;
+    list = links.lista();
 %>
 <!DOCTYPE html>
 <html>
@@ -25,25 +34,43 @@ String contextPath = request.getContextPath();
 	<main>
 	  <h1>Encurtador de Link</h1>
 	  <form action="PonteEncurta" method="post">
-	  <input type="text" id="input" name="url" placeholder="Insira ou digite sua URL">
+	  <input type="text" id="input" name="url" placeholder="Insira ou digite sua URL" value=<%=original%>>
 	  <div class="botoes">
-		<input type="submit" name="refazUrl" value="Refazer" id="refazUrl">
-		<input type="submit" name="encurtador" value="Encurtar" id="encurtador">
+	  		<input type="submit" name="encurtador" value="Encurtar" id="encurtador">
+			<input type="button" name="refazUrl" value="Refazer" id="refazUrl">
+			<input type="button" name="mostraUrls" value="Mostrar URLs" id="mostraUrls"/>
 	  </div>
 	  </form>
-	  <section id="section"></section>
+	  <section id="section">
+	  	<article class="article">
+	  		<header><h3>Link encurtado</h3></header>
+	  	 	 <%
+			    for(int i = 0; i < list.size(); i++) {
+				   out.println(URL + list.get(i).getHash() + "<br/>" );
+				}
+    		%>
+    	</article>
+		 <article class="article">
+		 	<header><h3>Link original</h3></header>
+	  	 	 <%
+			    for(int i = 0; i < list.size(); i++) {
+				   out.println( list.get(i).getOriginal() + "<br/>" );
+				}
+    		%>
+    	</article>
+	  </section>
 	</main>
 	<%
 	out.println("<link rel='stylesheet' href='"+contextPath+"/CSS/boilerplate.min.css' type='text/css'>");
 	out.println("<link rel='stylesheet' href='"+contextPath+"/CSS/curta.css' type='text/css'>");
 	out.println("<script src='"+contextPath+"/JS/jquery-3.2.1.min.js' type='text/javascript'></script>");
+	out.println("<script src='"+contextPath+"/JS/curta.js' type='text/javascript'></script>");
 	%>
-	
 	<script type="text/javascript">
-		$(window).on("load", function (e) {
-		// Animar para fade out
-			$(".se-pre-con").fadeOut("slow");
-		});
+		var original, hash, URL;
+		original = <%=original%>
+		hash = <%=hash%>
+		URL = <%=URL%>
 	</script>
 </body>
 </html>

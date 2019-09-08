@@ -64,8 +64,11 @@ button {
 
 section {
   min-height: 120px;
-  text-align: center;
-  background-color: white;
+  text-align: left;
+  background-color: #c0c0c0;
+}
+article{
+	margin-right: 10px;
 }
 .se-pre-con{
 	background: #fff;
