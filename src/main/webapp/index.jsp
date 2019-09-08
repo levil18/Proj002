@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ page import ="java.util.ArrayList"%>
 <%@ page import ="java.util.List"%>
-<%@page import="com.teste.leonardo.Encurta" %>
+<%@page import="com.teste.levil.PonteEncurta" %>
 <%
 String contextPath = request.getContextPath();
 //out.println(contextPath);
@@ -14,21 +14,23 @@ String contextPath = request.getContextPath();
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 	<body>
-	<!-- Paste this code after body tag -->
+	<!-- Preload -->
 	<div class="se-pre-con">
 	<video autoplay muted loop id="myVideo" preload="auto">
 	  <source src="images/black_cube.webm" type="video/webm">
 	  <source src="images/video.mp4" type="video/mp4">
 	</video>
 	</div>
-	<!-- Ends -->
+	<!-- Fim -->
 	<main>
 	  <h1>Encurtador de Link</h1>
+	  <form action="PonteEncurta" method="post">
 	  <input type="text" id="input" name="url" placeholder="Insira ou digite sua URL">
 	  <div class="botoes">
-		<button id="refazUrl">Refazer</button>
-		<button id="encurtador">Encurtar</button>
+		<input type="submit" name="refazUrl" value="Refazer" id="refazUrl">
+		<input type="submit" name="encurtador" value="Encurtar" id="encurtador">
 	  </div>
+	  </form>
 	  <section id="section"></section>
 	</main>
 	<%

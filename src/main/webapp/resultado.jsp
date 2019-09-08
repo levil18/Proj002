@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ page import ="java.util.ArrayList"%>
 <%@ page import ="java.util.List"%>
-<%@page import="com.teste.leonardo.App" %>
+<%@page import="com.teste.levil.PonteEncurta" %>
 <%
 String contextPath = request.getContextPath();
 //out.println(contextPath);
@@ -14,39 +14,40 @@ String contextPath = request.getContextPath();
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 	<body>
-
-	<!-- Paste this code after body tag -->
+	<!-- Preload -->
 	<div class="se-pre-con">
 	<video autoplay muted loop id="myVideo" preload="auto">
 	  <source src="images/black_cube.webm" type="video/webm">
 	  <source src="images/video.mp4" type="video/mp4">
 	</video>
 	</div>
-	<!-- Ends -->
+	<!-- Fim -->
 	<main>
 	  <h1>Encurtador de Link</h1>
-	  <input type="text" id="input" name="url" placeholder="Insira ou digite sua URL">
+	  <form action="PonteEncurta" method="post">
+	  <input type="text" id="input" name="url" placeholder="Insira ou digite sua URL"  value=<%=request.getAttribute("original").toString()%>/>
 	  <div class="botoes">
-		<button id="refazUrl">Refazer</button>
-		<button id="encurtador">Encurtar</button>
+		<input type="submit" name="refazUrl" value="Refazer" id="refazUrl"/>
+		<input type="submit" name="encurtador" value="Encurtar" id="encurtador"/>
 	  </div>
+	  </form>
 	  <section id="section">
 	  <%
-  
-	App teste = new App(); 
-    List<App> list= null;
-    
-    //teste.insere();
-    //teste.insere(Leonardo, leal);
-    //teste.atualiza(8);
-    //teste.deleta(15);
-    
-    //list = teste.lista();
-    
-    //teste.lista();
-    for(int i = 0; i < list.size(); i++) {
-	 //  out.println("Encurtado: " + list.get(i).getHash() + "<br/>" );
-	}
+		    PonteEncurta links = new PonteEncurta();
+		    List<PonteEncurta> list= null;
+		    
+		    //links.insere();
+		    //links.insere("3tpg6", "google.com.br");
+		    //links.insere("zpnns8a", "www.primevideo.com");
+		    //links.insere("6gvvov", "www.youtube.com/");
+		    
+		    //links.deleta("zpnns8a");
+		    //links.atualiza("6gvvov","zpnns8a", "www.primevideo.com");
+		    list = links.lista();
+		    //links.lista();
+		    for(int i = 0; i < list.size(); i++) {
+			   out.println("Link encurtado: levil.com.br/" + list.get(i).getHash() + "<br/>" );
+			}
     %>
     </section>
 	</main>
