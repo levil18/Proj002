@@ -3,14 +3,16 @@
 <%@ page import ="java.util.List"%>
 <%@page import="com.teste.levil.PonteEncurta" %>
 <%
-	String contextPath = request.getContextPath(), URL = "levil.com.br/", original = "", hash="";
+	String contextPath = request.getContextPath(), URL = "levil.com.br/", original = "", hash="", encurtada="";
 	//out.println(contextPath);
 	if(null != request.getAttribute("original")){
         original = request.getAttribute("original").toString();
     }
 	if(null != request.getAttribute("hash")){
 		hash = request.getAttribute("hash").toString();
+		encurtada = URL+hash;
  	}
+	
     PonteEncurta links = new PonteEncurta();
     List<PonteEncurta> list= null;
     list = links.lista();
@@ -25,18 +27,14 @@
 	<body>
 	<!-- Preload -->
 	<div class="se-pre-con">
-	<video autoplay muted loop id="myVideo" preload="auto">
-	  <source src="images/black_cube.webm" type="video/webm">
-	  <source src="images/video.mp4" type="video/mp4">
-	</video>
 	</div>
 	<!-- Fim -->
 	<main>
 	  <h1>Encurtador de Link</h1>
-	  <form action="PonteEncurta" method="post">
-	  <input type="text" id="input" name="url" placeholder="Insira ou digite sua URL" value=<%=original%>>
+	  <form id="gera_curta" action="PonteEncurta" method="post">
+	  <input type="text" id="input" name="url" placeholder="Insira ou digite sua URL" value=<%=encurtada%>>
 	  <div class="botoes">
-	  		<input type="submit" name="encurtador" value="Encurtar" id="encurtador">
+	  		<input type="button" name="encurtador" value="Encurtar" id="encurtador">
 			<input type="button" name="refazUrl" value="Refazer" id="refazUrl">
 			<input type="button" name="mostraUrls" value="Mostrar URLs" id="mostraUrls"/>
 	  </div>
@@ -60,17 +58,37 @@
     	</article>
 	  </section>
 	</main>
-	<%
-	out.println("<link rel='stylesheet' href='"+contextPath+"/CSS/boilerplate.min.css' type='text/css'>");
-	out.println("<link rel='stylesheet' href='"+contextPath+"/CSS/curta.css' type='text/css'>");
-	out.println("<script src='"+contextPath+"/JS/jquery-3.2.1.min.js' type='text/javascript'></script>");
-	out.println("<script src='"+contextPath+"/JS/curta.js' type='text/javascript'></script>");
-	%>
+	<style><%@include file="/WEB-INF/CSS/boilerplate.min.css"%></style>
+	<style><%@include file="/WEB-INF/CSS/curta.css"%></style>
+	<script type='text/javascript'><%@include file="/WEB-INF/JS/jquery-3.2.1.min.js"%></script>
+	<script type='text/javascript'><%@include file="/WEB-INF/JS/curta.js"%></script>
 	<script type="text/javascript">
 		var original, hash, URL;
-		original = <%=original%>
-		hash = <%=hash%>
-		URL = <%=URL%>
+		original = "<%=original%>";
+		hash = "<%=hash%>";
+		URL = "<%=URL%>";
+		encurtada = URL + hash;
+		$('#refazUrl').click(function() {
+			//alert("clicado!");
+			$('#input').val(original);
+		});
+		$( "#encurtador" ).click(function() {
+		if($('#input').val()!= ""){
+			if($('#input').val()!= encurtada){
+				if(original == $('#input').val()){
+					$('#input').val(encurtada);
+				}else{
+					$( "#gera_curta" ).submit();
+				}
+			}else{
+				alert("URL encurtada! Insira uma URL.");
+				$('#input').focus();
+			}
+		}else{
+			alert("Campo vazio!");
+			$('#input').focus();
+		}
+		});
 	</script>
 </body>
 </html>
