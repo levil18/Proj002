@@ -190,34 +190,45 @@ public class PonteEncurta extends HttpServlet {
 	
 	 @Override
 	 protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	     	String urlOriginal = request.getParameter("url"), hashGerada = null, urlRefeita = null;
-	        //boolean PressBotao = request.getParameter("encurtador") != null;
-	     	List<PonteEncurta> list= null;
+	     	String urlOriginal = request.getParameter("url"), hashGerada = null, urlRefeita = null, metodo = request.getParameter("metodo"), hash = request.getParameter("hash");
+	        boolean PressBotao = request.getParameter("hash") != null;
 	     	
-			//Encurta u = new Encurta(5, "www.levil.com.br/");
-	     	Encurta u = new Encurta(5);
+	        if(PressBotao) {
+	        	switch(metodo) {
+	        		case "delete":
+	        			deleta(hash);
+	        			break;
+	        		case "update":
+	        			break;
+	        	}
+	        	request.getRequestDispatcher("/index.jsp");
+	        }else {
+		     	List<PonteEncurta> list= null;
+		     	
+				//Encurta u = new Encurta(5, "www.levil.com.br/");
+		     	Encurta u = new Encurta(5);
 
-			
-			list = lista();
-		    for(int i = 0; i < list.size(); i++) {
-			    u.insereKey(list.get(i).getHash(), list.get(i).getOriginal());
-			}
-		    
-		    
-		    //System.out.println(hashGerada);
-		    //System.out.println(u.verificaHash(urlOriginal)); 
-		    
-		    if(!(u.verificaHash(urlOriginal))) {
-		    	hashGerada = u.encurtador(urlOriginal);
-			    urlRefeita = u.refazUrl(hashGerada);
-		    	//u.insereKey(hashGerada,urlRefeita);
-		        insere(hashGerada, urlRefeita);
-		    }
-		    //passa atributo para a página
-		    request.setAttribute("original", urlRefeita);
-		    request.setAttribute("hash", hashGerada);
-		    //seta o atributo e joga pra página linkada
-		    request.getRequestDispatcher("/index.jsp").forward(request, response);
-	        //response.sendRedirect(request.getContextPath()+"/resultado.jsp"); 
+				
+				list = lista();
+			    for(int i = 0; i < list.size(); i++) {
+				    u.insereKey(list.get(i).getHash(), list.get(i).getOriginal());
+				}
+			    
+			    
+			    //System.out.println(hashGerada);
+			    //System.out.println(u.verificaHash(urlOriginal)); 
+			    
+			    if(!(u.verificaHash(urlOriginal))) {
+			    	hashGerada = u.encurtador(urlOriginal);
+				    urlRefeita = u.refazUrl(hashGerada);
+			    	//u.insereKey(hashGerada,urlRefeita);
+			        insere(hashGerada, urlRefeita);
+			    }
+			    //passa atributo para a página
+			    request.setAttribute("original", urlRefeita);
+			    request.setAttribute("hash", hashGerada);
+			    //seta o atributo e joga pra página linkada
+			    request.getRequestDispatcher("/index.jsp").forward(request, response);
+	        }
 	 }
 }

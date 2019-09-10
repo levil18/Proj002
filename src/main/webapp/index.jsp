@@ -36,7 +36,7 @@
 	  <div class="botoes">
 	  		<input type="button" name="encurtador" value="Encurtar" id="encurtador" />
 			<input type="button" name="refazUrl" value="Refazer" id="refazUrl" />
-			<input type="button" name="mostraUrls" value="Mostrar URLs" id="mostraUrls"/>
+			<input type="button" name="mostraUrls" value="Mostrar URLs" id="mostraUrls" />
 	  </div>
 	  </form>
 	  <section id="section">
@@ -50,11 +50,15 @@
     	</article>
 		 <article class="article">
 		 	<header><h3>Link original</h3></header>
+			<form id="altera_curta" action="PonteEncurta" method="post">
 	  	 	 <%
 			    for(int i = 0; i < list.size(); i++) {
 				   out.println("<input type='text' class='links' value='" + list.get(i).getOriginal() + "' readonly />" );
+				   out.println("<input type='button' value='' name='"+list.get(i).getHash()+"' class='alter' />");
+				   out.println("<input type='button' value='' name='"+list.get(i).getHash()+"' class='del' />");
 				}
     		%>
+			</form>
     	</article>
 	  </section>
 	</main>
