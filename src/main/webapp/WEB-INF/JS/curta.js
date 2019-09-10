@@ -6,4 +6,5 @@ $(window).on("load", function (e) {
 $('#mostraUrls').click(function() {
 	//alert("clicado!");
 	$('.article').fadeIn("slow");
+	$("main").css("height", "auto");
 });

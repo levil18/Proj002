@@ -32,10 +32,10 @@
 	<main>
 	  <h1>Encurtador de Link</h1>
 	  <form id="gera_curta" action="PonteEncurta" method="post">
-	  <input type="text" id="input" name="url" placeholder="Insira ou digite sua URL" value=<%=encurtada%>>
+	  <input type="text" id="input" name="url" placeholder="Insira ou digite sua URL" value="<%=encurtada%>" />
 	  <div class="botoes">
-	  		<input type="button" name="encurtador" value="Encurtar" id="encurtador">
-			<input type="button" name="refazUrl" value="Refazer" id="refazUrl">
+	  		<input type="button" name="encurtador" value="Encurtar" id="encurtador" />
+			<input type="button" name="refazUrl" value="Refazer" id="refazUrl" />
 			<input type="button" name="mostraUrls" value="Mostrar URLs" id="mostraUrls"/>
 	  </div>
 	  </form>
@@ -44,7 +44,7 @@
 	  		<header><h3>Link encurtado</h3></header>
 	  	 	 <%
 			    for(int i = 0; i < list.size(); i++) {
-				   out.println(URL + list.get(i).getHash() + "<br/>" );
+				   out.println("<p>" + URL + list.get(i).getHash() + "</p>" );
 				}
     		%>
     	</article>
@@ -52,7 +52,7 @@
 		 	<header><h3>Link original</h3></header>
 	  	 	 <%
 			    for(int i = 0; i < list.size(); i++) {
-				   out.println( list.get(i).getOriginal() + "<br/>" );
+				   out.println("<input type='text' class='links' value='" + list.get(i).getOriginal() + "' readonly />" );
 				}
     		%>
     	</article>
@@ -68,26 +68,29 @@
 		hash = "<%=hash%>";
 		URL = "<%=URL%>";
 		encurtada = URL + hash;
+		if("" != hash){
+			$("#refazUrl").show();
+		}
 		$('#refazUrl').click(function() {
 			//alert("clicado!");
 			$('#input').val(original);
 		});
 		$( "#encurtador" ).click(function() {
-		if($('#input').val()!= ""){
-			if($('#input').val()!= encurtada){
-				if(original == $('#input').val()){
-					$('#input').val(encurtada);
+			if($('#input').val()!= ""){
+				if($('#input').val()!= encurtada){
+					if(original == $('#input').val()){
+						$('#input').val(encurtada);
+					}else{
+						$( "#gera_curta" ).submit();
+					}
 				}else{
-					$( "#gera_curta" ).submit();
+					alert("URL encurtada! Insira uma URL.");
+					$('#input').focus();
 				}
 			}else{
-				alert("URL encurtada! Insira uma URL.");
+				alert("Campo vazio!");
 				$('#input').focus();
 			}
-		}else{
-			alert("Campo vazio!");
-			$('#input').focus();
-		}
 		});
 	</script>
 </body>
