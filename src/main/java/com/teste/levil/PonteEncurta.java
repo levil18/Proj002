@@ -22,7 +22,11 @@ import com.teste.levil.Encurta;
 
 @Entity
 @Table(name = "urls") 
-@WebServlet("/")
+@WebServlet(
+        name = "PonteEncurta",
+        description = "Servelet de conexão",
+        urlPatterns = "/"
+)
 public class PonteEncurta extends HttpServlet {
 	
 	/**
@@ -183,9 +187,9 @@ public class PonteEncurta extends HttpServlet {
 				System.out.println(e);
 				if ( session.getTransaction() != null )
 					session.getTransaction().rollback();
-			}finally{
-				session.close();
-			}
+		}finally{
+			session.close();
+		}
 	}
 	
 	 @Override
