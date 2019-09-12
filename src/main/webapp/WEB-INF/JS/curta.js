@@ -1,4 +1,5 @@
 encurtada = URL + hash;
+var metodo = "", atualiza = false;
 
 //quando carregar dar fade de carregamento
 $(window).on("load", function (e) {
@@ -17,23 +18,38 @@ $('#refazUrl').click(function() {
 
 //se botão de rafazer for clicado jogará a URL com hash no input
 $( "#encurtador" ).click(function() {
+	if(atualiza == false){
 	//verifica se é vazio o input
-	if($('#input').val()!= ""){
-		//se o valor for diferente da url já encurtada
-		if($('#input').val()!= encurtada){
-			//se a url inserida é diferente da última exibida no input
-			if(original == $('#input').val()){
-				$('#input').val(encurtada);
+		if($('#input').val()!= ""){
+			//se o valor for diferente da url já encurtada
+			if($('#input').val()!= encurtada){
+				//se a url inserida é diferente da última exibida no input
+				if(original == $('#input').val()){
+					$('#input').val(encurtada);
+				}else{
+					$( "#gera_curta" ).submit();
+				}
 			}else{
-				$( "#gera_curta" ).submit();
+				alert("URL encurtada! Insira uma URL.");
+				$('#input').focus();
 			}
 		}else{
-			alert("URL encurtada! Insira uma URL.");
+			alert("Campo vazio!");
 			$('#input').focus();
-		}
+		}													
 	}else{
-		alert("Campo vazio!");
-		$('#input').focus();
+		if($('#input').val()!= original){
+			original = $('#input').val();
+			console.log(hash+" "+ metodo + " "+original);
+			$.post("PonteEncurta",{
+				hash: hash,
+				metodo: metodo,
+				url: original
+			});// colocar function em algum lugar por aqui
+			atualiza = false;
+		}else{
+			alert("URL Nao foi alterada!");
+		}
 	}
 });
 
@@ -46,7 +62,8 @@ $('#mostraUrls').click(function() {
 
 //ação para deletar uma URL do BD
 $(".del").click(function(){
-	var hash = $(this).attr('name'), metodo = "delete";
+	metodo = "delete";
+	hash = $(this).attr('name');
 	$.post("PonteEncurta",{
 		hash: hash,
 		metodo: metodo
@@ -56,5 +73,19 @@ $(".del").click(function(){
 	//$(".del input[value='" + hash + "']").remove();
 	//$(".alter input[value='" + hash + "']").remove();
 });
-
+$(".alter").click(function(){
+	metodo = "update";
+	hash = $(this).attr('name');
+	original = $('.'+hash).val();
+	$('#input').val(original);
+	atualiza = true;
+	/*$.post("PonteEncurta",{
+		hash: hash,
+		metodo: metodo
+	});*/
+	//$("#" + hash).remove();
+	//$("." + hash ).remove();
+	//$(".del input[value='" + hash + "']").remove();
+	//$(".alter input[value='" + hash + "']").remove();
+});
 

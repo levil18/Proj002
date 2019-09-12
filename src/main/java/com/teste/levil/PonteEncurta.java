@@ -25,7 +25,7 @@ import com.teste.levil.Encurta;
 @WebServlet(
         name = "PonteEncurta",
         description = "Servelet de conexão",
-        urlPatterns = "/"
+        urlPatterns = "PonteEncurta"
 )
 public class PonteEncurta extends HttpServlet {
 	
@@ -154,13 +154,14 @@ public class PonteEncurta extends HttpServlet {
 			}
 	}*/
 	
-	public String atualiza(String hash, String novaURL) {
-		String novaHash, mod[2];
+	@SuppressWarnings("null")
+	public String[] atualiza(String hash, String novaURL) {
+		String novaHash, mod[] = null;
 		SessionFactory sessionFactory = HibernateUtil.buildSessionFactory();
 	    Session session = sessionFactory.openSession();
 		
 		Encurta u = new Encurta(5);
-		novaHash = u.encurtador(urlOriginal);
+		novaHash = u.encurtador(novaURL);
 		novaURL = u.refazUrl(novaHash);
 		mod[0] = novaHash;
 		mod[1] = novaURL;
@@ -201,7 +202,7 @@ public class PonteEncurta extends HttpServlet {
 	
 	 @Override
 	 protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	     	String urlOriginal = request.getParameter("url"), hashGerada = null, urlRefeita = null, metodo = request.getParameter("metodo"), hash = request.getParameter("hash"), novos[2];
+	     	String urlOriginal = request.getParameter("url"), hashGerada = null, urlRefeita = null, metodo = request.getParameter("metodo"), hash = request.getParameter("hash"), novos[];
 	        boolean PressBotao = request.getParameter("hash") != null;
 	     	
 	        if(PressBotao) {
@@ -212,9 +213,13 @@ public class PonteEncurta extends HttpServlet {
 	        			break;
 	        		case "update":
 						novos = atualiza(hash, urlOriginal);
-						request.setAttribute("original", novos[0]);
-						request.setAttribute("hash", novos[1]);
-						request.getRequestDispatcher("/index.jsp").forward(request, response);
+						/*request.setAttribute("original", novos[0]);
+						request.setAttribute("hash", novos[1]);*/
+						
+						response.setContentType("text/plain");
+						response.setCharacterEncoding("UTF-8");
+						response.getWriter().write(novos[0]);
+						//request.getRequestDispatcher("/index.jsp");
 	        			break;
 	        	}
 	        	
