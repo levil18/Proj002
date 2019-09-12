@@ -154,22 +154,29 @@ public class PonteEncurta extends HttpServlet {
 			}
 	}*/
 	
-	public void atualiza(String hash, String novaHash, String novaURL) {
+	public String atualiza(String hash, String novaURL) {
+		String novaHash, mod[2];
 		SessionFactory sessionFactory = HibernateUtil.buildSessionFactory();
 	    Session session = sessionFactory.openSession();
-	   
+		
+		Encurta u = new Encurta(5);
+		novaHash = u.encurtador(urlOriginal);
+		novaURL = u.refazUrl(novaHash);
+		mod[0] = novaHash;
+		mod[1] = novaURL;
 	    try {
 	        PonteEncurta l = new PonteEncurta();
 		    l.deleta(hash);
 		    l.insere(novaHash, novaURL);
 	    }catch ( HibernateException e ){
-				System.out.println("Erro de atualização!!!");
-				System.out.println(e);
-				if ( session.getTransaction() != null )
-					session.getTransaction().rollback();
-			}finally{
-				session.close();
-			}
+			System.out.println("Erro de atualização!!!");
+			System.out.println(e);
+			if ( session.getTransaction() != null )
+				session.getTransaction().rollback();
+		}finally{
+			session.close();
+		}
+		return mod;
 	}
 
 	public void deleta(String hash) {
@@ -194,18 +201,23 @@ public class PonteEncurta extends HttpServlet {
 	
 	 @Override
 	 protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	     	String urlOriginal = request.getParameter("url"), hashGerada = null, urlRefeita = null, metodo = request.getParameter("metodo"), hash = request.getParameter("hash");
+	     	String urlOriginal = request.getParameter("url"), hashGerada = null, urlRefeita = null, metodo = request.getParameter("metodo"), hash = request.getParameter("hash"), novos[2];
 	        boolean PressBotao = request.getParameter("hash") != null;
 	     	
 	        if(PressBotao) {
 	        	switch(metodo) {
 	        		case "delete":
 	        			deleta(hash);
+						request.getRequestDispatcher("/index.jsp");
 	        			break;
 	        		case "update":
+						novos = atualiza(hash, urlOriginal);
+						request.setAttribute("original", novos[0]);
+						request.setAttribute("hash", novos[1]);
+						request.getRequestDispatcher("/index.jsp").forward(request, response);
 	        			break;
 	        	}
-	        	request.getRequestDispatcher("/index.jsp");
+	        	
 	        }else {
 		     	List<PonteEncurta> list= null;
 		     	
